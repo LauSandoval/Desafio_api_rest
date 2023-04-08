@@ -1,5 +1,5 @@
 const express = require('express')
-const {getDate, obtenerJoyas} = require('./consultas');
+const {getDate, getJoyas, getFiltro} = require('./consultas');
 const app = express()
 app.listen(3000, console.log('Server ON'))
 
@@ -9,22 +9,19 @@ app.use(express.json())
 
 app.get('/joyas', async (req, res) => {
   try {
-    const queryString = req.query
-    const consulta = await obtenerJoyas(queryString)
-  
-  res.json(consulta)
+    const consulta = await getJoyas()
+    res.json(consulta)
 }
 catch (error) {
   console.log(error)
   res.status(500).send("Ups, algo salio mal")
-  
 }
 })
+
 app.get('/joyas/filtros', async (req, res) => {
   const queryString = req.query
-  const joyas = await obtenerJoyasPorFiltros(queryString)
+  const joyas = await getFiltro(queryString)
   res.json(joyas)
-
 })
 
 app.get('/date', async (req, res) => {
